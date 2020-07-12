@@ -1,7 +1,9 @@
 import sys
+import csv
+
 class Registration():
 	st_id = [0]
-	st_dts = []
+	st_dts = [("ID",'Name',"Address","Mobile Number","Course","Dues")]
 	info = {}
 	rpay = 20000
 	def details(self,name,addr,mob,course):
@@ -11,7 +13,9 @@ class Registration():
 
 	def get_pay(self,no,amount):
 		cur_id = self.st_id[no]
-		if self.info[cur_id] == 20000:
+		if amount != 10000 or 20000:
+			return print(self.st_dts[cur_id-1][1]," your payment amount is invalid , please pay 10000 or 20000 only .")
+		elif self.info[cur_id] == 20000:
 			self.info[cur_id] = (self.info[cur_id] - amount)
 			self.st_dts[cur_id-1][5] = self.info[cur_id]
 
@@ -21,45 +25,45 @@ class Registration():
 
 	def update_name(self,no,nw_nm):
 		cur_id = self.st_id[no]
-		self.st_dts[cur_id-1][1] = nw_nm
+		self.st_dts[cur_id][1] = nw_nm
 	
 	def update_addr(self,no,nw_addr):
 		cur_id = self.st_id[no]
-		self.st_dts[cur_id-1][2] = nw_addr
+		self.st_dts[cur_id][2] = nw_addr
 	
 	def update_mob(self,no,nw_mob):
 		cur_id = self.st_id[no]
-		self.st_dts[cur_id-1][3] = nw_mob
+		self.st_dts[cur_id][3] = nw_mob
 
+	def delete_info(self,no):
+		cur_id = self.st_id[no]
+		self.st_dts.pop(cur_id-1)
 
 student = Registration()
 
-# a = 0
-# while a != 8:
-# 	a = input("Enter a number ")
-# 	if a == 1:
-# 		nm = input("Enter name")
-# 		addr = input("Enter address")
-# 		mob = input("Enter mobile number")
-# 		cour = input("Enter course")
-# 		# student.details("Saurav","Yetkha",9841609896,'IT')
-# 		student.details(nm,addr,mob,cour)
-# 	elif a == 2:
-# 		student.get_pay(1,10000)
-# 	elif a == 3:
-# 		student.update_name(1,"DonDai")
-# 		student.update_addr(1,"China")
-# 		student.update_mob(1,352385)
-# 	elif a == 4:
-# 		student.display_detail()
-
-	
-student.details("Saurav","Yetkha",9841609896,'IT')
+student.details("Saurav Raj Joshi","Yetkha",9841609896,'Python')
+student.details("Fan","Too hot",3,'Spinning')
+student.details("Late","Night",12,'Sleeping')
 student.display_detail()
+
 student.get_pay(1,10000)
-student.update_name(1,"DonDai")
-student.update_addr(1,"China")
-student.update_mob(1,352385)
+student.get_pay(2,20000)
+student.get_pay(3,0)
+
+
+student.update_name(2,"Pankha")
+student.update_mob(3,911)
+student.update_addr(2,"Basantpur")
+
+
+student.delete_info(1)
+
 student.display_detail()
 
 
+with open('student_info.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerows(student.st_dts)
+
+f = open('student_info.csv','r')
+print(f.read())
